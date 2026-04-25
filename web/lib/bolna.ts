@@ -16,6 +16,10 @@ export async function triggerOutboundCall(args: {
   const body: Record<string, unknown> = {
     agent_id: AGENT_ID,
     recipient_phone_number: args.recipientPhone,
+    // Admin-triggered calls override the agent's calling-hours guardrail.
+    // The guardrail is meant for automated batch dialling; manual clicks
+    // from the dashboard are intentional and should fire immediately.
+    bypass_call_guardrails: true,
   };
   if (args.fromPhone) body.from_phone_number = args.fromPhone;
   if (args.userData) body.user_data = args.userData;
