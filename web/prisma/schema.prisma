@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Lead {
+  id                 String   @id @default(cuid())
+  name               String
+  phone              String
+  source             String?
+  notes              String?
+  status             String   @default("new") // new | queued | in_progress | completed | failed
+  intent             String?  // self_use | investment | both | unclear
+  locationComfort    String?  // comfortable | hesitant | prefers_other_area
+  budgetRange        String?  // fits | below | above | undisclosed
+  timelineComfort    String?  // comfortable | wants_sooner | unsure
+  ctaOutcome         String?  // call_booked | brochure_requested | callback_requested | not_interested
+  callbackDay        String?
+  callbackTime       String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  calls              Call[]
+}
+
+model Call {
+  id            String   @id @default(cuid())
+  leadId        String
+  executionId   String?  @unique
+  status        String   @default("queued") // queued | in_progress | completed | failed
+  duration      Int?     // seconds
+  recordingUrl  String?
+  transcript    String?  // JSON-stringified array of {role, content}
+  summary       String?
+  extracted     String?  // JSON-stringified extraction blob from Bolna
+  rawPayload    String?  // full webhook body for debugging
+  startedAt     DateTime?
+  endedAt       DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  lead          Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+}
+
+model Setting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}

@@ -1,0 +1,27 @@
+# Dependencies and build output
+web/node_modules/
+web/.next/
+web/out/
+
+# Local DB
+web/prisma/dev.db
+web/prisma/dev.db-journal
+
+# Environment / secrets
+web/.env
+web/.env.local
+web/.env.production
+
+# Local working files (provisioning scripts, cached API responses)
+.work/
+
+# OS / editor artifacts
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Reference materials kept locally but not part of the repo
+Full Stack Assignment.pdf
+bolna_dashboard_default.png
