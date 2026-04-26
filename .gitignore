@@ -25,3 +25,8 @@ Thumbs.db
 # Reference materials kept locally but not part of the repo
 Full Stack Assignment.pdf
 bolna_dashboard_default.png
+call-transcript.md
+*.mp3
+*.mp4
+*.mov
+*.webm
