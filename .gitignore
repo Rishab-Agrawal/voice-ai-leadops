@@ -22,10 +22,17 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Reference materials kept locally but not part of the repo
-Full Stack Assignment.pdf
+# Reference materials and generated PDFs kept locally but not part of the repo
+*.pdf
 bolna_dashboard_default.png
-call-transcript.md
+
+# Submission artifacts kept locally for upload to Google Drive
+*-transcript.md
+success-matrix.md
+submission*.md
+links.md
+links.txt
+links-*.md
 *.mp3
 *.mp4
 *.mov
