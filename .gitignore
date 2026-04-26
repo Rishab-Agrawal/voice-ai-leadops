@@ -26,6 +26,9 @@ Thumbs.db
 *.pdf
 bolna_dashboard_default.png
 
+# Drive submission staging folders (e.g. RishabAgrawal_FSE@Bolna/)
+*@Bolna/
+
 # Submission artifacts kept locally for upload to Google Drive
 *-transcript.md
 success-matrix.md
