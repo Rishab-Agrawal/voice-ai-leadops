@@ -6,6 +6,7 @@ import {
   fromBolnaExtractedData,
   normalizeTranscript,
 } from "@/lib/extract";
+import { postSlackAlert } from "@/lib/slack";
 
 /**
  * Receives post-call execution data from Bolna.
@@ -144,6 +145,15 @@ export async function POST(req: NextRequest) {
       callbackDay: callbackDay ?? lead.callbackDay,
       callbackTime: callbackTime ?? lead.callbackTime,
     },
+  });
+
+  // Optional Slack alert. No-op if SLACK_WEBHOOK_URL isn't configured.
+  // Awaited intentionally — we want delivery confirmed before responding to Bolna.
+  await postSlackAlert({
+    id: executionId,
+    agentId: (body.agent_id as string) || null,
+    duration: callData.duration ?? null,
+    transcript: turns,
   });
 
   return NextResponse.json({ ok: true, leadId: lead.id, status: newStatus });
