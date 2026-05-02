@@ -147,14 +147,18 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  // Optional Slack alert. No-op if SLACK_WEBHOOK_URL isn't configured.
-  // Awaited intentionally — we want delivery confirmed before responding to Bolna.
-  await postSlackAlert({
-    id: executionId,
-    agentId: (body.agent_id as string) || null,
-    duration: callData.duration ?? null,
-    transcript: turns,
-  });
+  // Slack alert only on the terminal "completed" event. Bolna posts the
+  // webhook on every status transition (scheduled → queued → in-progress →
+  // completed); the early ones have no transcript or duration yet, so
+  // forwarding them would produce empty alerts.
+  if (status.toLowerCase() === "completed") {
+    await postSlackAlert({
+      id: executionId,
+      agentId: (body.agent_id as string) || null,
+      duration: callData.duration ?? null,
+      transcript: turns,
+    });
+  }
 
   return NextResponse.json({ ok: true, leadId: lead.id, status: newStatus });
 }
